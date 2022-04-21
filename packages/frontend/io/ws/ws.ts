@@ -4,7 +4,7 @@ type WebsocketProtocol = 'ws' | 'wss';
 
 const protocol: WebsocketProtocol = process.env.NODE_ENV === 'development' ? 'ws' : 'wss';
 
-const baseUrl: string = (process.env.NODE_ENV === 'development' ? 'localhost:3000' : window.location) + '/ws';
+const baseUrl: string = window.location.hostname + (process.env.NODE_ENV === 'development' ? ':3000' : '') + '/ws';
 
 export const useWebSocketOpptegnelser = () => {
     useEffect(() => {
