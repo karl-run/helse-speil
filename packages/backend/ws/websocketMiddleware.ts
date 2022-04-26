@@ -1,7 +1,7 @@
 import config from '../config';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:9001' : config.server.spesialistBaseUrl;
+const baseUrl = process.env.NODE_ENV === 'development' ? 'ws://localhost:9001' : 'wss://spesialist';
 
 export default () => ({
     getWebsocketProxy: () => {
