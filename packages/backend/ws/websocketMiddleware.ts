@@ -21,13 +21,7 @@ export default () => ({
             onClose: (proxyRes: Response, proxySocket: net.Socket, proxyHead: any) => logger.info('ws proxy close'),
             onOpen: (proxySocket: net.Socket) => logger.info('ws proxy open'),
             onProxyReq: (proxyReq: http.ClientRequest, req: Request, res: Response, options: httpProxy.ServerOptions) =>
-                logger.info(
-                    'ws proxy onProxyReq',
-                    JSON.stringify(proxyReq),
-                    JSON.stringify(req),
-                    JSON.stringify(res),
-                    JSON.stringify(options)
-                ),
+                logger.info('ws proxy onProxyReq', proxyReq, req, res, options),
             onProxyReqWs: (
                 proxyReq: http.ClientRequest,
                 req: Request,
@@ -36,7 +30,7 @@ export default () => ({
                 head: any
             ) => logger.info('ws proxy onProxyReqWs'),
             onProxyRes: (proxyRes: http.IncomingMessage, req: Request, res: Response) =>
-                logger.info('ws proxy onProxyRes', JSON.stringify(proxyRes), JSON.stringify(req), JSON.stringify(res)),
+                logger.info('ws proxy onProxyRes', proxyRes, req, res),
         });
     },
 });
