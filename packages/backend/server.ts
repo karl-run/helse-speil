@@ -188,7 +188,9 @@ app.use('/static', express.static(`${clientPath}/static`));
 app.use('/*', express.static(`${clientPath}/index.html`));
 app.use('/', express.static(`${clientPath}/`));
 
-app.listen(port, () => logger.info(`Speil backend listening on port ${port}`)).on('upgrade', (req, socket, head) => {
+const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
+
+server.on('upgrade', (req, socket, head) => {
     logger.info('upgrading websocket request');
     logger.info(`request ${req}`);
 
