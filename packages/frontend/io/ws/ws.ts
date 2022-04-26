@@ -8,7 +8,7 @@ const baseUrl: string = window.location.hostname + (process.env.NODE_ENV === 'de
 
 export const useWebSocketOpptegnelser = () => {
     useEffect(() => {
-        const socket = new WebSocket(`ws://${baseUrl}/opptegnelse`);
+        const socket = new WebSocket(`${protocol}://${baseUrl}/opptegnelse`);
         socket.onopen = () => {
             console.log('websocket open');
             socket.send('Speil åpnet websocket');

@@ -186,7 +186,7 @@ app.use('/*', express.static(`${clientPath}/index.html`));
 app.use('/', express.static(`${clientPath}/`));
 
 const wsProxy = websocketMiddleware().getWebsocketProxy();
-app.use('/ws', wsProxy);
+app.use(wsProxy);
 
 const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
 
