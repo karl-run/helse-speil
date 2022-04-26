@@ -190,9 +190,9 @@ app.use(wsProxy);
 
 const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
 
-server.on('upgrade', (req: SpeilRequest, socket, head) => {
+server.on('upgrade', (req, socket, head) => {
     logger.info('upgrading websocket request');
-    logger.info(`request ${req}, ${req?.session?.speilToken}`);
+    logger.info(`request ${req}`);
 
     // const { onBehalfOf } = dependencies.ws;
     // const { clientIDSpesialist } = dependencies.ws.oidcConfig;
