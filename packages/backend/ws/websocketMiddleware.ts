@@ -6,7 +6,7 @@ const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:9001'
 export default () => ({
     getWebsocketProxy: () => {
         logger.info('Setting up websocket proxy');
-        return createProxyMiddleware('/ws', {
+        return createProxyMiddleware('/', {
             target: baseUrl,
             ws: true,
             changeOrigin: true,

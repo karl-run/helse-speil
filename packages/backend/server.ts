@@ -168,6 +168,9 @@ app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.p
 app.use('/api/notater', notatRoutes(dependencies.notat));
 app.use('/graphql', graphQLRoutes(dependencies.graphql));
 
+const wsProxy = websocketMiddleware().getWebsocketProxy();
+app.use('/ws', wsProxy);
+
 app.get('/*', (req, res, next) => {
     if (!req.accepts('html') && /\/api/.test(req.url)) {
         console.debug(`Received a non-HTML request for '${req.url}', which didn't match a route`);
@@ -185,12 +188,7 @@ app.use('/static', express.static(`${clientPath}/static`));
 app.use('/*', express.static(`${clientPath}/index.html`));
 app.use('/', express.static(`${clientPath}/`));
 
-const wsProxy = websocketMiddleware().getWebsocketProxy();
-app.use(wsProxy);
-
-const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
-
-server.on('upgrade', (req, socket, head) => {
+app.listen(port, () => logger.info(`Speil backend listening on port ${port}`)).on('upgrade', (req, socket, head) => {
     logger.info('upgrading websocket request');
     logger.info(`request ${req}`);
 
