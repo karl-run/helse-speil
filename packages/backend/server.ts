@@ -197,7 +197,7 @@ server.on('upgrade', async (req: SpeilRequest, socket, head) => {
     const { onBehalfOf } = dependencies.ws;
     const { clientIDSpesialist } = dependencies.ws.oidcConfig;
     const speilToken = req?.session?.speilToken;
-    const onBehalfOfToken = await onBehalfOf.hentFor(clientIDSpesialist, speilToken); // (oidcConfig.clientIDSpesialist, speilToken);
+    const onBehalfOfToken = await onBehalfOf.hentFor(clientIDSpesialist, speilToken);
     req.headers['Authorization'] = `Bearer ${onBehalfOfToken}`;
 
     // @ts-ignore
