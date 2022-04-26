@@ -190,15 +190,15 @@ app.use(wsProxy);
 
 const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
 
-server.on('upgrade', async (req: SpeilRequest, socket, head) => {
+server.on('upgrade', (req: SpeilRequest, socket, head) => {
     logger.info('upgrading websocket request');
     logger.info(`request ${req}, ${req?.session?.speilToken}`);
 
-    const { onBehalfOf } = dependencies.ws;
-    const { clientIDSpesialist } = dependencies.ws.oidcConfig;
-    const speilToken = req?.session?.speilToken;
-    const onBehalfOfToken = await onBehalfOf.hentFor(clientIDSpesialist, speilToken);
-    req.headers['Authorization'] = `Bearer ${onBehalfOfToken}`;
+    // const { onBehalfOf } = dependencies.ws;
+    // const { clientIDSpesialist } = dependencies.ws.oidcConfig;
+    // const speilToken = req?.session?.speilToken;
+    // const onBehalfOfToken = await onBehalfOf.hentFor(clientIDSpesialist, speilToken);
+    // req.headers['Authorization'] = `Bearer ${onBehalfOfToken}`;
 
     // @ts-ignore
     wsProxy.upgrade(req, socket, head);
