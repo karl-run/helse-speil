@@ -4,18 +4,19 @@ type WebsocketProtocol = 'ws' | 'wss';
 
 const protocol: WebsocketProtocol = process.env.NODE_ENV === 'development' ? 'ws' : 'wss';
 
-const baseUrl: string = window.location.hostname + (process.env.NODE_ENV === 'development' ? ':3000' : '') + '/ws';
+const baseUrl: string = window.location.hostname + (process.env.NODE_ENV === 'development' ? ':3000' : '');
 
 export const useWebSocketOpptegnelser = () => {
     useEffect(() => {
-        const socket = new WebSocket(`${protocol}://${baseUrl}/opptegnelse`);
+        const url = `${protocol}://${baseUrl}/ws/opptegnelse`;
+        const socket = new WebSocket(url);
         socket.onopen = (event: Event) => {
-            console.log('websocket open', JSON.stringify(event));
+            console.log('websocket open', event);
             socket.send('Speil åpnet websocket');
         };
-        socket.onclose = (event: CloseEvent) => console.log('websocket close', JSON.stringify(event));
-        socket.onmessage = (event: MessageEvent) => console.log('websocket message: ', JSON.stringify(event));
-        socket.onerror = (event: Event) => console.error('websocket error', JSON.stringify(event));
+        socket.onclose = (event: CloseEvent) => console.log('websocket close', event);
+        socket.onmessage = (event: MessageEvent) => console.log('websocket message', event);
+        socket.onerror = (event: Event) => console.error('websocket error', event);
         return () => {
             socket.close();
         };

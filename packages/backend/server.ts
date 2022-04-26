@@ -169,7 +169,7 @@ app.use('/api/notater', notatRoutes(dependencies.notat));
 app.use('/graphql', graphQLRoutes(dependencies.graphql));
 
 const wsProxy = websocketMiddleware().getWebsocketProxy();
-app.use('/ws', wsProxy);
+app.use('/ws/*', wsProxy);
 
 app.get('/*', (req, res, next) => {
     if (!req.accepts('html') && /\/api/.test(req.url)) {
