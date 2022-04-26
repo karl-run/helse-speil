@@ -9,12 +9,13 @@ const baseUrl: string = window.location.hostname + (process.env.NODE_ENV === 'de
 export const useWebSocketOpptegnelser = () => {
     useEffect(() => {
         const socket = new WebSocket(`${protocol}://${baseUrl}/opptegnelse`);
-        socket.onopen = () => {
-            console.log('websocket open');
+        socket.onopen = (event: Event) => {
+            console.log('websocket open', JSON.stringify(event));
             socket.send('Speil åpnet websocket');
         };
-        socket.onclose = (event: CloseEvent) => console.log('websocket close', event.reason);
-        socket.onmessage = (event: MessageEvent) => console.log('websocket message: ', event.data);
+        socket.onclose = (event: CloseEvent) => console.log('websocket close', JSON.stringify(event));
+        socket.onmessage = (event: MessageEvent) => console.log('websocket message: ', JSON.stringify(event));
+        socket.onerror = (event: Event) => console.error('websocket error', JSON.stringify(event));
         return () => {
             socket.close();
         };
