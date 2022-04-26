@@ -58,6 +58,7 @@ const getDevDependencies = (app: Express) => {
         leggPåVent: { leggPåVentClient: devLeggPåVentClient },
         notat: { notatClient: devNotatClient },
         graphql: { graphQLClient: _devGraphQLClient },
+        ws: { oidcConfig: config.oidc, onBehalfOf: devOnBehalfOf },
         instrumentation,
     };
 };
@@ -97,6 +98,7 @@ const getProdDependencies = (app: Express, helsesjekk: Helsesjekk) => {
         leggPåVent: { leggPåVentClient: _leggPåVentClient },
         notat: { notatClient: _notatClient },
         graphql: { graphQLClient: _graphQLClient },
+        ws: { oidcConfig: config.oidc, onBehalfOf: _onBehalfOf },
         instrumentation,
     };
 };

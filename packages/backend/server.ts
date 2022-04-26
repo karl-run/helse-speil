@@ -2,7 +2,6 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import util from 'util';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 import express, { Response } from 'express';
 import { Client, generators } from 'openid-client';
 
@@ -24,6 +23,7 @@ import tildelingRoutes from './tildeling/tildelingRoutes';
 import graphQLRoutes from './graphql/graphQLRoutes';
 import { AuthError, SpeilRequest } from './types';
 import wiring from './wiring';
+import websocketMiddleware from './ws/websocketMiddleware';
 
 const app = express();
 const port = config.server.port;
@@ -185,15 +185,21 @@ app.use('/static', express.static(`${clientPath}/static`));
 app.use('/*', express.static(`${clientPath}/index.html`));
 app.use('/', express.static(`${clientPath}/`));
 
-// WebSocket proxy
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:9001' : config.server.spesialistBaseUrl;
-const wsProxy = createProxyMiddleware({
-    target: baseUrl,
-    ws: true,
-    changeOrigin: true,
-});
+const wsProxy = websocketMiddleware().getWebsocketProxy();
 app.use('/ws', wsProxy);
 
 const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
-// @ts-ignore
-server.on('upgrade', wsProxy.upgrade);
+
+server.on('upgrade', async (req: SpeilRequest, socket, head) => {
+    logger.info('upgrading websocket request');
+    logger.info(`request ${req}, ${req?.session?.speilToken}`);
+
+    const { onBehalfOf } = dependencies.ws;
+    const { clientIDSpesialist } = dependencies.ws.oidcConfig;
+    const speilToken = req?.session?.speilToken;
+    const onBehalfOfToken = await onBehalfOf.hentFor(clientIDSpesialist, speilToken); // (oidcConfig.clientIDSpesialist, speilToken);
+    req.headers['Authorization'] = `Bearer ${onBehalfOfToken}`;
+
+    // @ts-ignore
+    wsProxy.upgrade(req, socket, head);
+});
