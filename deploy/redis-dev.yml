@@ -8,6 +8,8 @@ metadata:
   annotations:
     nais.io/run-as-group: "0"
     nais.io/read-only-file-system: "false"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   accessPolicy:
     inbound:

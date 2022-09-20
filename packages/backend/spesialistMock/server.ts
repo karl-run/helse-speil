@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { WebSocketServer } from 'ws';
 
 import { sleep } from '../devHelpers';
 import { setupGraphQLMiddleware } from './graphql';
@@ -185,4 +186,16 @@ app.get('/api/mock/tidligeresaksbehandler/:oppgavereferanse', (req: Request, res
 
 setupGraphQLMiddleware(app);
 
-app.listen(port, () => console.log(`Spesialist-mock kjører på port ${port}`));
+const server = app.listen(port, () => console.log(`Spesialist-mock kjører på port ${port}`));
+
+// WebSocketServer
+const wss = new WebSocketServer({ server });
+wss.on('connection', (ws, req) => {
+    ws.send('Melding via WebSocket fra SpesialistMock');
+
+    if (req.url === '/ws/opptegnelse') {
+        ws.on('message', (message) => {
+            console.log(`Mottatt opptegnelse fra WebSocket: ${message}`);
+        });
+    }
+});

@@ -17,6 +17,7 @@ import { useKeyboardShortcuts } from './useKeyboardShortcuts';
 import { VenterPåEndringProvider } from './VenterPåEndringContext';
 
 import styles from './Saksbilde.module.css';
+import { useWebSocketOpptegnelser } from '@io/ws/ws';
 
 const Utbetalingshistorikk = React.lazy(() => import('./utbetalingshistorikk/Utbetalingshistorikk'));
 
@@ -24,6 +25,7 @@ const SaksbildeContent = React.memo(() => {
     useRefreshPersonVedUrlEndring();
     useRefreshPersonVedOpptegnelse();
     usePollEtterOpptegnelser();
+    useWebSocketOpptegnelser();
     useVarselOmSakErTildeltAnnenSaksbehandler();
     useKeyboardShortcuts();
 

@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import util from 'util';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import express, { Response } from 'express';
 import { Client, generators } from 'openid-client';
 
@@ -184,4 +185,15 @@ app.use('/static', express.static(`${clientPath}/static`));
 app.use('/*', express.static(`${clientPath}/index.html`));
 app.use('/', express.static(`${clientPath}/`));
 
-app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
+// WebSocket proxy
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:9001' : config.server.spesialistBaseUrl;
+const wsProxy = createProxyMiddleware({
+    target: baseUrl,
+    ws: true,
+    changeOrigin: true,
+});
+app.use('/ws', wsProxy);
+
+const server = app.listen(port, () => logger.info(`Speil backend listening on port ${port}`));
+// @ts-ignore
+server.on('upgrade', wsProxy.upgrade);
