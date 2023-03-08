@@ -39,7 +39,13 @@ export const ExpandableTimelineRow: React.FC<ExpandableTimelineRowProp> = ({
             </Tooltip>
             <div className={classNames(styles.Periods)}>
                 {generations[0] && (
-                    <Periods start={start} end={end} periods={generations[0].perioder} activePeriod={activePeriod} />
+                    <Periods
+                        start={start}
+                        end={end}
+                        periods={generations[0].perioder}
+                        ghostPeriods={ghostPeriods}
+                        activePeriod={activePeriod}
+                    />
                 )}
                 {isExpanded &&
                     generations

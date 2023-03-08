@@ -75,6 +75,7 @@ const TimelineWithContent: React.FC<TimelineWithContentProps> = React.memo(
                                     end={end}
                                     name={arbeidsgiver.navn ?? arbeidsgiver.organisasjonsnummer}
                                     generations={arbeidsgiver.generasjoner}
+                                    ghostPeriods={arbeidsgiver.ghostPerioder}
                                     activePeriod={activePeriod}
                                 />
                             ) : (
