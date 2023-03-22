@@ -22,6 +22,8 @@ const tilOverstyrtDagtype = (type: Utbetalingstabelldagtype): OverstyrtDagtype =
         case 'SykHelg':
         case 'Syk':
             return 'Sykedag';
+        case 'SykNav':
+            return 'SykedagNav';
         case 'Feriehelg':
         case 'Ferie':
             return 'Feriedag';

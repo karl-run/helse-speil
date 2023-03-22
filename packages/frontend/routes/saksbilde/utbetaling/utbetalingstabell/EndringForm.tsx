@@ -17,7 +17,7 @@ type GetLovligeTypeendringerOptions = {
 export const getLovligeTypeendringer = ({
     revurderingIsEnabled,
 }: GetLovligeTypeendringerOptions = {}): Array<Utbetalingstabelldagtype> => {
-    if (erUtvikling() || erCoachEllerSuper()) return ['Syk', 'Ferie', 'Egenmelding', 'Permisjon', 'Arbeid'];
+    if (erUtvikling() || erCoachEllerSuper()) return ['Syk', 'Ferie', 'Egenmelding', 'Permisjon', 'Arbeid', 'SykNav'];
     if (revurderingIsEnabled) {
         return ['Syk', 'Ferie'];
     } else {
