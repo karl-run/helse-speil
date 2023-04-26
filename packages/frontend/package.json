@@ -22,6 +22,7 @@
         "prettier": "prettier --write \"**/*.{jsx,js,css,ts,tsx}\""
     },
     "dependencies": {
+        "@apollo/client": "^3.7.12",
         "@emotion/core": "^11.0.0",
         "@emotion/react": "^11.4.1",
         "@emotion/styled": "^11.3.0",
@@ -41,7 +42,7 @@
         "fetch-intercept": "^2.4.0",
         "framer-motion": "^6.3.3",
         "graphiql": "^1.5.16",
-        "graphql": "^16.2.0",
+        "graphql": "^16.6.0",
         "graphql-request": "^5.2.0",
         "nanoid": "^3.1.25",
         "react": "^18.0.0",

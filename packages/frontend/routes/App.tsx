@@ -4,12 +4,14 @@ import { BrowserRouter, Route, Switch, useLocation } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import 'reset-css';
 
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import { ProtectedRoute } from '@components/ProtectedRoute';
 import { Toasts } from '@components/Toasts';
 import { Varsler } from '@components/Varsler';
 import { Header } from '@components/header/Header';
 import { useLoadingToast } from '@hooks/useLoadingToast';
+import possibletypes from '@io/graphql/generated/possibletypes';
 import { useUpdateAuthentication } from '@state/authentication';
 import { useEasterEggIsActive } from '@state/easterEgg';
 import { usePersonLoadable } from '@state/person';
@@ -29,6 +31,15 @@ const Agurk = React.lazy(() => import('../components/Agurk').catch(onLazyLoadFai
 const GraphQLPlayground = React.lazy(() => import('./playground/GraphQLPlayground').catch(onLazyLoadFail));
 
 ReactModal.setAppElement('#root');
+
+const client = new ApolloClient({
+    uri: 'http://localhost:3000/graphql',
+    cache: new InMemoryCache({
+        dataIdFromObject: () => undefined,
+        possibleTypes: possibletypes.possibleTypes,
+        typePolicies: { VarselDTO: { keyFields: ['generasjonId', 'kode'] } },
+    }),
+});
 
 const useSyncAlertsToLocation = () => {
     const location = useLocation();
@@ -92,7 +103,9 @@ const withRoutingAndState = (Component: React.ComponentType) => () =>
     (
         <BrowserRouter>
             <RecoilRoot>
-                <Component />
+                <ApolloProvider client={client}>
+                    <Component />
+                </ApolloProvider>
             </RecoilRoot>
         </BrowserRouter>
     );

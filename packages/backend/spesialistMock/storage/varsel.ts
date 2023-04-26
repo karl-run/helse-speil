@@ -64,7 +64,7 @@ export class VarselMock {
                   definisjonId: definisjonIdString,
                   generasjonId: generasjonIdString,
                   kode: varselkode,
-                  tittel: '',
+                  tittel: 'Hei fra mocken',
                   forklaring: null,
                   handling: null,
                   vurdering: {

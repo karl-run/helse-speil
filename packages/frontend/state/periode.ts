@@ -1,6 +1,8 @@
-import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil';
+import { atom, selector, useSetRecoilState } from 'recoil';
 
+import { useQuery } from '@apollo/client';
 import { Periodetilstand } from '@io/graphql';
+import { FetchPersonDocument } from '@io/graphql/generated/graphql2';
 import { personState } from '@state/person';
 import { hasPeriod } from '@state/selectors/person';
 import { isBeregnetPeriode, isPerson } from '@utils/typeguards';
@@ -43,6 +45,32 @@ export const activePeriod = selector<ActivePeriod | null>({
     },
 });
 
-export const useActivePeriod = (): ActivePeriod | null => useRecoilValue(activePeriod);
+export const useActivePeriod = (): ActivePeriod | null => {
+    // hente en id fra state for [ velge active state
+    const { data } = useQuery(FetchPersonDocument, { variables: { aktorId: '2564094783926' } });
+
+    const person = data?.person;
+    if (!isPerson(person)) {
+        return null;
+    }
+
+    const allPeriods = person.arbeidsgivere
+        .flatMap((arbeidsgiver) => arbeidsgiver.generasjoner[0]?.perioder ?? [])
+        .sort((a, b) => new Date(b.fom).getTime() - new Date(a.fom).getTime())
+        .filter(isBeregnetPeriode)
+        .filter((it) => it.periodetilstand !== Periodetilstand.TilInfotrygd);
+
+    const periodWithOppgave =
+        allPeriods.find(
+            (periode) =>
+                isBeregnetPeriode(periode) &&
+                periode.periodetilstand === Periodetilstand.TilGodkjenning &&
+                typeof periode.oppgave?.id === 'string'
+        ) ?? null;
+
+    const periode = periodWithOppgave ?? allPeriods[0];
+
+    return isBeregnetPeriode(periode) ? periode : null;
+};
 
 export const useSetActivePeriod = () => useSetRecoilState(activePeriodState);

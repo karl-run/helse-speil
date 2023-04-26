@@ -21,8 +21,8 @@ const UberegnetPeriodeView = React.lazy(() => import('./UberegnetPeriodeView').c
 const BeregnetPeriodeView = React.lazy(() => import('./BeregnetPeriodeView').catch(onLazyLoadFail));
 
 const PeriodeViewContainer: React.FC = () => {
-    const activePeriod = useActivePeriod();
     const currentPerson = useCurrentPerson();
+    const activePeriod = useActivePeriod();
 
     if (!activePeriod || !currentPerson) {
         return <PeriodeViewSkeleton />;

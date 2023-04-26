@@ -1,6 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { Loadable, atom, useRecoilValue, useRecoilValueLoadable, useResetRecoilState, useSetRecoilState } from 'recoil';
 
+import { useQuery } from '@apollo/client';
 import { Maybe, Person, fetchPerson } from '@io/graphql';
 import {
     FetchError,
@@ -9,6 +10,7 @@ import {
     ProtectedError,
     isFetchErrorArray,
 } from '@io/graphql/errors';
+import { FetchPersonDocument } from '@io/graphql/generated/graphql2';
 import { NotatDTO, SpeilResponse, deletePåVent, deleteTildeling, postLeggPåVent, postTildeling } from '@io/http';
 import { useInnloggetSaksbehandler } from '@state/authentication';
 import { activePeriodState } from '@state/periode';
@@ -77,10 +79,12 @@ export const personState = atom<PersonState>({
 });
 
 export const useCurrentPerson = (): Maybe<FetchedPerson> => {
-    return useRecoilValue(personState).person;
+    const apolloResponse = useQuery(FetchPersonDocument, { variables: { aktorId: '2564094783926' } });
+    return apolloResponse.data?.person ?? null;
 };
 
 export const useFetchPerson = (): ((id: string) => Promise<PersonState | void>) => {
+    useQuery(FetchPersonDocument, { variables: { aktorId: '2564094783926' } });
     const setPerson = useSetRecoilState(personState);
     const setActivePeriod = useSetRecoilState(activePeriodState);
 
