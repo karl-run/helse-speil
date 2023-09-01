@@ -19,6 +19,12 @@
 
 .arbeidsgivere {
     margin-bottom: var(--a-spacing-4);
+    display: flex;
+}
+
+.arbeidsgivereHeader {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .arbeidsgiver {

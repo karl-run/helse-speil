@@ -109,7 +109,10 @@ export const SkjønnsfastsettingForm = ({
                 <div className={styles.skjønnsfastsetting}>
                     <SkjønnsfastsettingÅrsak />
                     <SkjønnsfastsettingType />
-                    <SkjønnsfastsettingArbeidsgivere arbeidsgivere={aktiveArbeidsgivere} />
+                    <SkjønnsfastsettingArbeidsgivere
+                        arbeidsgivere={aktiveArbeidsgivere}
+                        sammenligningsgrunnlag={sammenligningsgrunnlag}
+                    />
                     <SkjønnsfastsettingBegrunnelse
                         omregnetÅrsinntekt={omregnetÅrsinntekt}
                         sammenligningsgrunnlag={sammenligningsgrunnlag}
