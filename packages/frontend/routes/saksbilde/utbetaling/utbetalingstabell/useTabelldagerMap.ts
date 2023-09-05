@@ -77,7 +77,7 @@ const getUtbetalingstabelldagtype = (dag: Dag): Utbetalingstabelldagtype => {
             return 'Egenmelding';
         case Sykdomsdagtype.Sykedag:
         case Sykdomsdagtype.ForeldetSykedag:
-            return erSykedagNav ? 'Syk (NAV)' : 'Syk';
+            return 'Foreldet';
         case Sykdomsdagtype.SykHelgedag:
             return 'SykHelg';
         case Sykdomsdagtype.FriskHelgedag:

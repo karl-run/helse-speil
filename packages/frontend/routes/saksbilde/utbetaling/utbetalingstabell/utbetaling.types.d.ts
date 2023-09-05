@@ -9,6 +9,7 @@ declare type Utbetalingstabelldagtype =
     | 'Feriehelg'
     | 'SykHelg'
     | 'Syk (NAV)'
+    | 'Foreldet'
     | 'Helg'
     | 'Ukjent'
     | 'Egenmelding'

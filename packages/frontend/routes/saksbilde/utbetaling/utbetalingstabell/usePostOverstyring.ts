@@ -31,6 +31,8 @@ const tilOverstyrtDagtype = (type: Utbetalingstabelldagtype): OverstyrtDagtype =
             return 'Omsorgspengerdag';
         case 'Opplæringspenger':
             return 'Opplaringspengerdag';
+        case 'Foreldet':
+            return 'ForeldetSykedag';
         case 'SykHelg':
         case 'Syk':
             return 'Sykedag';

@@ -72,9 +72,9 @@ const getDisplayText = (dag?: UtbetalingstabellDag): string | null => {
     } else if (dag.erAGP && (typeof dag?.personbeløp === 'number' || typeof dag?.arbeidsgiverbeløp === 'number')) {
         return `${dagtype} (NAV)`;
     } else if (dag.erAGP) {
-        return `${dagtype} (AGP)`;
-    } else if (dag.erForeldet) {
-        return `${dagtype} (Foreldet)`;
+        return dagtype == 'Helg' ? 'Helg (AGP)' : 'Syk (AGP)';
+    } else if (dag.type === 'Foreldet') {
+        return `Syk (${dagtype})`;
     } else if (dag.type === 'FriskHelg') {
         return `${dagtype} (Frisk)`;
     } else if (dag.type === 'SykHelg') {
