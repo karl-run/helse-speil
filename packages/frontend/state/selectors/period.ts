@@ -50,7 +50,7 @@ export const isInCurrentGeneration = (period: ActivePeriod, arbeidsgiver: Arbeid
     }
 
     return arbeidsgiver.generasjoner[0]?.perioder.some(
-        (periode) => isBeregnetPeriode(periode) && periode.id === period.id,
+        (periode) => isBeregnetPeriode(periode) && periode.vedtaksperiodeId === period.vedtaksperiodeId,
     );
 };
 

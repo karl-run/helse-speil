@@ -32,13 +32,16 @@ const filterValidPeriods = (periods: Array<DatePeriod>): Array<DatePeriod> =>
 
 const isActive = (activePeriod: Periode, currentPeriod: Periode): boolean => {
     if (isGhostPeriode(activePeriod) && isGhostPeriode(currentPeriod)) {
-        return activePeriod.id === currentPeriod.id;
+        return (
+            activePeriod.fom === currentPeriod.fom &&
+            activePeriod.organisasjonsnummer === currentPeriod.organisasjonsnummer
+        );
     } else if (isBeregnetPeriode(activePeriod) && isBeregnetPeriode(currentPeriod)) {
-        return activePeriod.id === currentPeriod.id;
+        return activePeriod.vedtaksperiodeId === currentPeriod.vedtaksperiodeId;
     } else if (isUberegnetPeriode(activePeriod) && isUberegnetPeriode(currentPeriod)) {
-        return activePeriod.id === currentPeriod.id;
+        return activePeriod.vedtaksperiodeId === currentPeriod.vedtaksperiodeId;
     } else if (isUberegnetVilkarsprovdPeriode(activePeriod) && isUberegnetVilkarsprovdPeriode(currentPeriod)) {
-        return activePeriod.id === currentPeriod.id;
+        return activePeriod.vedtaksperiodeId === currentPeriod.vedtaksperiodeId;
     } else {
         return false;
     }

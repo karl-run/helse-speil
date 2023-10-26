@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 
-import { Arbeidsgiverinntekt, GhostPeriode, Inntektskilde, Vilkarsgrunnlag } from '@io/graphql';
+import { Arbeidsgiverinntekt, Vilkarsgrunnlag } from '@io/graphql';
 import { getRequiredTimestamp, isGodkjent } from '@state/selectors/utbetaling';
-import { isBeregnetPeriode, isDagoverstyring, isGhostPeriode } from '@utils/typeguards';
+import { isBeregnetPeriode, isDagoverstyring } from '@utils/typeguards';
 
 dayjs.extend(minMax);
 
@@ -16,49 +16,10 @@ export const getRequiredInntekt = (
         throw Error('Fant ikke inntekt');
     })();
 
-export const getInntektFraInntektsmelding = (
-    grunnlag: Vilkarsgrunnlag,
-    organisasjonsnummer: string,
-): Arbeidsgiverinntekt | null => {
-    return (
-        grunnlag.inntekter.find(
-            (it) =>
-                it.arbeidsgiver === organisasjonsnummer &&
-                it.omregnetArsinntekt?.kilde === Inntektskilde.Inntektsmelding,
-        ) ?? null
-    );
-};
-
-export const getInntektFraAOrdningen = (
-    grunnlag: Vilkarsgrunnlag,
-    organisasjonsnummer: string,
-): Arbeidsgiverinntekt | null => {
-    return (
-        grunnlag.inntekter.find(
-            (it) =>
-                it.arbeidsgiver === organisasjonsnummer && it.omregnetArsinntekt?.kilde === Inntektskilde.Aordningen,
-        ) ?? null
-    );
-};
-
 export type Inntekter = {
     organisasjonsnummer: string;
     fraInntektsmelding?: Maybe<Arbeidsgiverinntekt>;
     fraAOrdningen?: Maybe<Arbeidsgiverinntekt>;
-};
-
-export const getInntekter = (grunnlag: Vilkarsgrunnlag, organisasjonsnummer: string): Inntekter => {
-    const inntekter: Inntekter = {
-        organisasjonsnummer,
-        fraInntektsmelding: getInntektFraInntektsmelding(grunnlag, organisasjonsnummer),
-        fraAOrdningen: getInntektFraAOrdningen(grunnlag, organisasjonsnummer),
-    };
-
-    if (inntekter.fraAOrdningen === null && inntekter.fraInntektsmelding === null) {
-        throw Error('Fant ikke inntekt');
-    }
-
-    return inntekter;
 };
 
 export const getVilkårsgrunnlag = (person: FetchedPerson, grunnlagId?: Maybe<string>): Vilkarsgrunnlag | null => {
@@ -72,32 +33,6 @@ export const getRequiredVilkårsgrunnlag = (person: FetchedPerson, grunnlagId?: 
             throw Error('Fant ikke vilkårsgrunnlag');
         })()
     );
-};
-
-const hasGhostPeriod = (person: FetchedPerson, period: GhostPeriode): boolean => {
-    return (
-        person.arbeidsgivere.flatMap(({ ghostPerioder }) => ghostPerioder).find(({ id }) => id === period.id) !==
-        undefined
-    );
-};
-
-const hasRegularPeriod = (
-    person: FetchedPerson,
-    period: FetchedBeregnetPeriode | UberegnetPeriode | UberegnetVilkarsprovdPeriode,
-): boolean => {
-    return (
-        person.arbeidsgivere
-            .flatMap((arbeidsgiver) => arbeidsgiver.generasjoner.flatMap((generasjon) => generasjon.perioder))
-            .find(({ id }) => id === period.id) !== undefined
-    );
-};
-
-export const hasPeriod = (person: FetchedPerson, period: ActivePeriod): boolean => {
-    if (isGhostPeriode(period)) {
-        return hasGhostPeriod(person, period);
-    }
-
-    return hasRegularPeriod(person, period);
 };
 
 export const getLatestUtbetalingTimestamp = (person: FetchedPerson, after: DateString = '1970-01-01'): Dayjs => {

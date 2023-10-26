@@ -5,7 +5,7 @@ import { Periodetilstand } from '@io/graphql';
 import { useCurrentPerson } from '@state/person';
 import { isBeregnetPeriode, isUberegnetVilkarsprovdPeriode } from '@utils/typeguards';
 
-const activePeriodIdState = atom<string | null>({
+const activePeriodIdState = atom<string | { fom: string; orgnummer: string } | null>({
     key: 'activePeriodId',
     default: null,
 });
@@ -15,9 +15,9 @@ export const useSetActivePeriodId = () => {
     const [activePeriodId, setActivePeriodId] = useRecoilState(activePeriodIdState);
 
     return (periodeId: string) => {
-        const periode = findPeriod(periodeId, person);
+        const periode = findPeriod(periodeId, person)?.periodetilstand;
         if (activePeriodId === periode || !periode) return;
-        setActivePeriodId(periode.id);
+        setActivePeriodId(periode.vedtaksperiodeId);
     };
 };
 
@@ -72,4 +72,4 @@ const findPeriod = (periodeId: string, person: FetchPersonQuery['person']) =>
     person?.arbeidsgivere
         .flatMap((arbeidsgiver) => arbeidsgiver.generasjoner)
         .flatMap((generasjon) => generasjon.perioder)
-        .find((periode) => periode.id === periodeId) ?? null;
+        .find((periode) => periode.vedtaksperiodeId === periodeId) ?? null;

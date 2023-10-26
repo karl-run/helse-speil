@@ -32,12 +32,16 @@ import {
 } from '@utils/typeguards';
 
 export const findArbeidsgiverWithGhostPeriode = (
-    period: GhostPeriode,
+    perioden: GhostPeriode,
     arbeidsgivere: Array<Arbeidsgiver>,
 ): Maybe<Arbeidsgiver> => {
     return (
-        arbeidsgivere.find((arbeidsgiver) => arbeidsgiver.ghostPerioder.find((periode) => periode.id === period.id)) ??
-        null
+        arbeidsgivere.find((arbeidsgiver) =>
+            arbeidsgiver.ghostPerioder.find(
+                (enGhost) =>
+                    enGhost.fom === perioden.fom && enGhost.organisasjonsnummer === perioden.organisasjonsnummer,
+            ),
+        ) ?? null
     );
 };
 
@@ -57,7 +61,7 @@ export const findArbeidsgiverWithPeriode = (
                 )
                 .find(
                     (periode: UberegnetPeriode | BeregnetPeriode | UberegnetVilkarsprovdPeriode) =>
-                        periode.id === period.id,
+                        periode.vedtaksperiodeId === period.vedtaksperiodeId,
                 ),
         ) ?? null
     );
@@ -102,19 +106,22 @@ export const usePeriodIsInGeneration = (): number | null => {
     const period = useActivePeriod();
     const arbeidsgiver = useCurrentArbeidsgiver();
 
-    if (!period || !arbeidsgiver) {
+    if (!period || !arbeidsgiver || isGhostPeriode(period)) {
         return null;
     }
 
     return arbeidsgiver.generasjoner.findIndex((it) =>
-        it.perioder.some((periode) => isBeregnetPeriode(periode) && periode.id === period.id),
+        it.perioder.some(
+            (periode) => isBeregnetPeriode(periode) && periode.vedtaksperiodeId === period.vedtaksperiodeId,
+        ),
     );
 };
 
 export const usePeriodeErIGenerasjon = (arbeidsgiver: Arbeidsgiver | null, periodeId: string): number | null =>
     arbeidsgiver?.generasjoner.findIndex((it) =>
         it.perioder.some(
-            (periode) => (isBeregnetPeriode(periode) || isUberegnetPeriode(periode)) && periode.id === periodeId,
+            (periode) =>
+                (isBeregnetPeriode(periode) || isUberegnetPeriode(periode)) && periode.vedtaksperiodeId === periodeId,
         ),
     ) ?? null;
 
@@ -338,7 +345,7 @@ export const useLokaltMånedsbeløp = (organisasjonsnummer: string, skjæringsti
 export const useGjenståendeDager = (periode: BeregnetPeriode | UberegnetPeriode): Maybe<number> => {
     const person = useCurrentPerson();
     const arbeidsgiver = findArbeidsgiverWithPeriode(periode, person?.arbeidsgivere ?? []);
-    const periodeErIGenerasjon = usePeriodeErIGenerasjon(arbeidsgiver, periode.id);
+    const periodeErIGenerasjon = usePeriodeErIGenerasjon(arbeidsgiver, periode.vedtaksperiodeId);
 
     if (
         !person ||
