@@ -63,6 +63,7 @@ export const SykepengegrunnlagFraSpleis = ({
                 aktivInntektskilde={aktivInntektskilde}
                 sykepengegrunnlagsgrense={vilkårsgrunnlag.sykepengegrunnlagsgrense}
                 skjønnsmessigFastsattÅrlig={vilkårsgrunnlag.skjonnsmessigFastsattAarlig}
+                harBlittSkjønnsmessigFastsatt={vilkårsgrunnlag.harBlittSkjønnsmessigFastsatt}
             />
             <Strek />
             {aktivInntektskilde.omregnetArsinntekt !== null ? (

@@ -19,7 +19,7 @@ import styles from './Inntektssammenligning.module.css';
 interface InntektssammenligningProps {
     organisasjonsnummer: string;
     omregnetÅrsinntekt?: Maybe<OmregnetArsinntekt>;
-    skjønnsmessigFastsatt?: Maybe<OmregnetArsinntekt>;
+    skjønnsmessigFastsatt?: number;
     sammenligningsgrunnlag?: Maybe<Sammenligningsgrunnlag>;
     arbeidsforholdErDeaktivert?: Maybe<boolean>;
     erGjeldende: boolean;
@@ -72,11 +72,11 @@ export const Inntektssammenligning = ({
                 content={
                     <SkjønnsfastsettingContent
                         arbeidsforholdErDeaktivert={arbeidsforholdErDeaktivert}
-                        kilde={skjønnsmessigFastsatt?.kilde}
-                        beløp={skjønnsmessigFastsatt?.belop}
+                        kilde={Inntektskilde.SkjonnsmessigFastsatt}
+                        beløp={skjønnsmessigFastsatt}
                     />
                 }
-                ikon={<SkjønnsfastsettingIkon kilde={skjønnsmessigFastsatt?.kilde} />}
+                ikon={<SkjønnsfastsettingIkon kilde={Inntektskilde.SkjonnsmessigFastsatt} />}
             />
         </tr>
     );

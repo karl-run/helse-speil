@@ -15,7 +15,7 @@ interface SkjønnsfastsettingSykepengegrunnlagProps {
     sykepengegrunnlagsgrense: Sykepengegrunnlagsgrense;
     omregnetÅrsinntekt?: Maybe<number>;
     sammenligningsgrunnlag?: Maybe<number>;
-    skjønnsmessigFastsattÅrlig?: Maybe<number>;
+    harBlittSkjønnsmessigFastsatt: boolean;
     inntekter: Arbeidsgiverinntekt[];
     avviksprosent: number;
 }
@@ -25,7 +25,7 @@ export const SkjønnsfastsettingSykepengegrunnlag = ({
     sykepengegrunnlagsgrense,
     omregnetÅrsinntekt,
     sammenligningsgrunnlag,
-    skjønnsmessigFastsattÅrlig,
+    harBlittSkjønnsmessigFastsatt,
     inntekter,
     avviksprosent,
 }: SkjønnsfastsettingSykepengegrunnlagProps) => {
@@ -42,7 +42,7 @@ export const SkjønnsfastsettingSykepengegrunnlag = ({
                 <SkjønnsfastsettingHeader
                     sykepengegrunnlag={sykepengegrunnlag}
                     endretSykepengegrunnlag={endretSykepengegrunnlag}
-                    skjønnsmessigFastsattÅrlig={skjønnsmessigFastsattÅrlig}
+                    harBlittSkjønnsmessigFastsatt={harBlittSkjønnsmessigFastsatt}
                     sykepengegrunnlagsgrense={sykepengegrunnlagsgrense}
                     avviksprosent={avviksprosent}
                     editing={editing}

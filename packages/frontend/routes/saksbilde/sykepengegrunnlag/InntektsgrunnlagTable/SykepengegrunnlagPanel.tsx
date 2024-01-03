@@ -51,7 +51,7 @@ export const SykepengegrunnlagPanel = ({
                 sykepengegrunnlag={sykepengegrunnlag}
                 omregnetÅrsinntekt={omregnetÅrsinntekt}
                 sammenligningsgrunnlag={sammenligningsgrunnlag}
-                skjønnsmessigFastsattÅrlig={skjønnsmessigFastsattÅrlig}
+                harBlittSkjønnsmessigFastsatt={skjønnsmessigFastsattÅrlig != null}
                 inntekter={inntekter}
                 avviksprosent={avviksprosent ?? 0}
             />

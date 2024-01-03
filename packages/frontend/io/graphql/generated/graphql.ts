@@ -114,7 +114,7 @@ export type Arbeidsgiverinntekt = {
     deaktivert?: Maybe<Scalars['Boolean']['output']>;
     omregnetArsinntekt?: Maybe<OmregnetArsinntekt>;
     sammenligningsgrunnlag?: Maybe<Sammenligningsgrunnlag>;
-    skjonnsmessigFastsatt?: Maybe<OmregnetArsinntekt>;
+    skjonnsmessigFastsatt?: number;
 };
 
 export type Arbeidsgiveroppdrag = Spennoppdrag & {

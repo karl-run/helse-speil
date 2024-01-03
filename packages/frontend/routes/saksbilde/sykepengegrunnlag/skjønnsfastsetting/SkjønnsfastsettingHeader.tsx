@@ -18,7 +18,7 @@ import styles from './SkjønnsfastsettingHeader.module.css';
 interface SkjønnsfastsettingHeaderProps {
     sykepengegrunnlag: number;
     endretSykepengegrunnlag: Maybe<number>;
-    skjønnsmessigFastsattÅrlig?: Maybe<number>;
+    harBlittSkjønnsmessigFastsatt: boolean;
     sykepengegrunnlagsgrense: Sykepengegrunnlagsgrense;
     avviksprosent: number;
     editing: boolean;
@@ -28,7 +28,7 @@ interface SkjønnsfastsettingHeaderProps {
 export const SkjønnsfastsettingHeader = ({
     sykepengegrunnlag,
     endretSykepengegrunnlag,
-    skjønnsmessigFastsattÅrlig,
+    harBlittSkjønnsmessigFastsatt,
     sykepengegrunnlagsgrense,
     avviksprosent,
     editing,
@@ -57,7 +57,7 @@ export const SkjønnsfastsettingHeader = ({
                     {visningharEndring && (
                         <p className={styles.opprinneligSykepengegrunnlag}>{toKronerOgØre(sykepengegrunnlag)}</p>
                     )}
-                    {skjønnsmessigFastsattÅrlig != null && (
+                    {harBlittSkjønnsmessigFastsatt && (
                         <Kilde type={Kildetype.Saksbehandler} className={styles.kildeIkon}>
                             <CaseworkerFilled title="Caseworker-ikon" height={20} width={20} />
                         </Kilde>

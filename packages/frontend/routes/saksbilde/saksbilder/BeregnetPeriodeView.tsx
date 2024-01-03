@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Loader } from '@navikt/ds-react';
 
 import { useErTidligereSaksbehandler } from '@hooks/useErTidligereSaksbehandler';
-import { Arbeidsforholdoverstyring, Inntektskilde, Overstyring, VilkarsgrunnlagSpleis } from '@io/graphql';
+import { Arbeidsforholdoverstyring, Overstyring, VilkarsgrunnlagSpleis } from '@io/graphql';
 import { useCurrentArbeidsgiver, useHarDagOverstyringer } from '@state/arbeidsgiver';
 import { getLatestUtbetalingTimestamp, getOverstyringerForEksisterendePerioder } from '@state/selectors/person';
 import { onLazyLoadFail } from '@utils/error';
@@ -79,7 +79,7 @@ export const BeregnetPeriodeView: React.FC<BeregnetPeriodeViewProps> = ({ period
         : undefined;
     const harBlittSkjønnsmessigFastsatt =
         vilkårsgrunnlag?.inntekter.find((aginntekt) => aginntekt.arbeidsgiver === arbeidsgiver?.organisasjonsnummer)
-            ?.skjonnsmessigFastsatt?.kilde === Inntektskilde.SkjonnsmessigFastsatt;
+            ?.skjonnsmessigFastsatt != null;
 
     return (
         <>
