@@ -3,6 +3,7 @@ import express from 'express';
 import { sleep } from '../devHelpers';
 import { setUpFaro } from './faro';
 import { setUpGraphQLMiddleware } from './graphql';
+import { setUpWebSockets } from './websocket';
 
 const app = express();
 const port = 9001;
@@ -32,5 +33,7 @@ app.use((req, res, next) => {
 
 setUpFaro(app);
 setUpGraphQLMiddleware(app);
+
+setUpWebSockets(app);
 
 app.listen(port, () => console.log(`Spesialist-mock kjører på port ${port}`));

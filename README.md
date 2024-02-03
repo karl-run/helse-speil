@@ -23,6 +23,7 @@ Lokalt serveres frontend (det som kjører i browser) og backend (det som står f
 cat > packages/backend/.env << EOF
 SESSION_SECRET=whatever
 SPESIALIST_BASE_URL=http://127.0.0.1:9001
+SPESIALIST_WS_URL=ws://localhost:9001
 EOF
 ```
 

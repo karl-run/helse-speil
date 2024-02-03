@@ -71,3 +71,5 @@ spec:
       value: https://speil.intern.dev.nav.no
     - name: SPESIALIST_BASE_URL
       value: http://spesialist
+    - name: SPESIALIST_WS_URL
+      value: ws://spesialist
